@@ -39,29 +39,133 @@ def spy_details_input():
         spy_details_input()
     ###function will run again if user input invalid name and will ask user to enter details again
 
-def start_chat( spy_name,spy_age,spy_rating):
-    ###function to get started with chat
-    menu_choices= "What do you want to do ?\n 1.Add a status update. \n 2. Quit"
-    menu_choice = int(raw_input(menu_choices))
-    ##storing the choice of user in the variable menu_choice
+##################################################################
+friends_name = []
+friends_age = []
+friends_rating = []
+friends_is_online = []
+####empty list
 
-    if (menu_choice==1):
-        print("status")
+
+def add_friend():
+    ###function to add details of friends
+    new_name = raw_input("Please add your friend's name:")
+    new_salutation = raw_input("Are they Mr. or Ms.?: ")
+    new_name = new_name + " " + new_salutation
+    new_age = raw_input("Age?")
+    new_rating = raw_input("Spy rating?")
+    if len(new_name) > 0 and new_age > 12 and new_rating >= spy_rating:
+        ####validating the details of friend entered
+        friends_name.append(new_name)
+        friends_age.append(new_age)
+        friends_rating.append(new_rating)
+        return len(friends_name)
+
     else:
-        print("quitting the program")
+        print 'Sorry! Invalid entry. We can\'t add spy with the details you provided'
+    return len(friends_name)
 
 
+###################################################################################
+
+
+
+
+
+def add_status(current_status_message):
+    ####function to add status
+    if current_status_message != None:
+        ###initiallly current status will be none
+        print (" Your current status is " + current_status_message + "\n")
+    else:
+        print (" You dont have any status message currently \n")
+
+    default = raw_input ("Do you want to select from the older status [Y/N] ?")
+    ##status_messages = ['My name is Rohit', 'I am very relaible', 'Mood off', 'Over the Moon', 'Piece of Cake']
+    if default.upper() == "N":
+        new_status_message =raw_input(" What status message do you want to set ?")
+######asking user to write status of his own and storing message in the variable new_status message
+        if len(new_status_message) > 0:
+            updated_status_message = new_status_message
+            ####the message stored in new_status_message will get copied in the new variable updated_status_message
+            status_messages.append(updated_status_message)
+            ###appending newly entered status in the list
+    elif default.upper() == "Y":
+        item_position = 1
+        for message in status_messages:
+            ###use of for loop in the list
+            print(str(item_position) + " " + message)
+            ##printing status list
+            item_position = item_position +1
+        message_selection = int(input("\n Choose from the above messages"))
+        ##asking user which status u want to add
+        if len (status_messages) >= message_selection:
+            updated_status_message= status_messages[message_selection-1]
+            ##new status message will be updated
+    return updated_status_message
+
+status_messages = ['My name is Rohit', 'I am very relaible', 'Mood off', 'Over the Moon', 'Piece of Cake']
+### pre stored statuses in the list
+
+
+
+
+
+def start_chat(spy_name, spy_age, spy_rating):
+    #### calling of start_chat function
+    show_menu = True
+    current_status_message=None
+    ###current status set to none initially
+    while show_menu==True:
+        ###chekcing condition
+        menu_choices = (" What do you want to do ? \n 1. Add a status update \n2. Add a friend \n3.Send a secret message \n4.Read a Secret message \n5.Read chats from a user \n6.Close Application \n")
+        menu_choice = int(raw_input(menu_choices))
+        ###asking user for his choice
+
+
+        if menu_choice == 1:
+            print (" You choose to update the status")
+            current_status_message = add_status(current_status_message)
+            ####passing current_status_message as argument in the add_status function
+
+        elif menu_choice ==2:
+            add_friend()
+
+
+        elif menu_choice == 6:
+            show_menu = False
+
+
+
+
+
+
+
+
+spy_name = "Rohit"
+spy_age = 20
+spy_rating = 4.4
+spy_salutation = "Mr."
+####default user details
 
 question = "do you want to continue as default user (Y/N)?"
+
 existing = raw_input(question)
-##storing the answer from user in the variable existing
 
 if existing == "Y":
-    from spy_details import spy_name, spy_salutation, spy_rating, spy_age
-    ####IMPORTING DEFAULT USER DETAILS FROM spy_details file
-    print(" Welcome %s %s" %(spy_salutation,spy_name))
-    start_chat(spy_name,spy_age,spy_rating)
-    ##execution of start_chat function
+        ####from spy_details import spy_name, spy_salutation, spy_rating, spy_age
+    print(" Welcome %s %s" % (spy_salutation, spy_name))
+    start_chat(spy_name, spy_age, spy_rating)
 else:
     spy_details_input()
-    ###when user dont want to continue as default user then this function will get executed and ask new user for details
+    ###ask the user to enter details
+    start_chat(spy_name, spy_age, spy_rating)
+    ##calling of start_chat function
+
+
+
+
+
+
+
+
