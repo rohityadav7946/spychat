@@ -61,9 +61,9 @@ def add_friend():
 
     new_friend['name'] = raw_input("Please add your friend's name: ")
     new_friend['salutation'] = raw_input("Are they Mr. or Ms.?: ")
-    new_friend['name'] = new_friend['salutation'] + " " + new_friend['name']
+    ##new_friend['name'] = new_friend['salutation'] + " " + new_friend['name']
 
-    new_friend['age'] = raw_input("Age?")
+    new_friend['age'] = int(raw_input("Age?"))
     new_friend['rating'] = float(raw_input("Spy rating?"))
     ####asking spy to enter details of his freiends
 
