@@ -40,30 +40,66 @@ def spy_details_input():
     ###function will run again if user input invalid name and will ask user to enter details again
 
 ##################################################################
+friends = []
 friends_name = []
 friends_age = []
 friends_rating = []
 friends_is_online = []
 ####empty list
-
+######################################NEW METHOD TO ADD A FREIND################################
 
 def add_friend():
     ###function to add details of friends
-    new_name = raw_input("Please add your friend's name:")
-    new_salutation = raw_input("Are they Mr. or Ms.?: ")
-    new_name = new_name + " " + new_salutation
-    new_age = raw_input("Age?")
-    new_rating = raw_input("Spy rating?")
-    if len(new_name) > 0 and new_age > 12 and new_rating >= spy_rating:
-        ####validating the details of friend entered
-        friends_name.append(new_name)
-        friends_age.append(new_age)
-        friends_rating.append(new_rating)
-        return len(friends_name)
+    new_friend = {
+        'name':"",
+        'salutation':'',
+        'age':0,
+        'rating':0.0
+#####dictionary
+
+    }
+
+    new_friend['name'] = raw_input("Please add your friend's name: ")
+    new_friend['salutation'] = raw_input("Are they Mr. or Ms.?: ")
+    new_friend['name'] = new_friend['salutation'] + " " + new_friend['name']
+
+    new_friend['age'] = raw_input("Age?")
+    new_friend['rating'] = float(raw_input("Spy rating?"))
+    ####asking spy to enter details of his freiends
+
+
+
+
+    if len(new_friend['name']) > 0 and new_friend['age'] > 12 and new_friend['rating'] >= spy_rating:
+        friends.append(new_friend)
+        ###appending details to list
 
     else:
         print 'Sorry! Invalid entry. We can\'t add spy with the details you provided'
-    return len(friends_name)
+    return len(friends)
+
+
+
+########################### OLD METHOD TO ADD A FRIEND#######################
+
+
+##def add_friend():
+    ###function to add details of friends
+  ##  new_name = raw_input("Please add your friend's name:")
+    ##new_salutation = raw_input("Are they Mr. or Ms.?: ")
+    ##new_name = new_name + " " + new_salutation
+ ##   new_age = raw_input("Age?")
+ ##   new_rating = raw_input("Spy rating?")
+   ## if len(new_name) > 0 and new_age > 12 and new_rating >= spy_rating:
+     ##   ####validating the details of friend entered
+       ## friends_name.append(new_name)
+        ##friends_age.append(new_age)
+        ##friends_rating.append(new_rating)
+     ##   return len(friends_name)
+
+   ## else:
+     ##   print 'Sorry! Invalid entry. We can\'t add spy with the details you provided'
+   ## return len(friends_name)
 
 
 ###################################################################################
@@ -88,6 +124,8 @@ def add_status(current_status_message):
         if len(new_status_message) > 0:
             updated_status_message = new_status_message
             ####the message stored in new_status_message will get copied in the new variable updated_status_message
+            print("Your updated status is " + updated_status_message)
+            ##printing the updated status message
             status_messages.append(updated_status_message)
             ###appending newly entered status in the list
     elif default.upper() == "Y":
@@ -102,6 +140,8 @@ def add_status(current_status_message):
         if len (status_messages) >= message_selection:
             updated_status_message= status_messages[message_selection-1]
             ##new status message will be updated
+            print("Your updated status is " + updated_status_message)
+            ##printing the updated status message
     return updated_status_message
 
 status_messages = ['My name is Rohit', 'I am very relaible', 'Mood off', 'Over the Moon', 'Piece of Cake']
@@ -129,7 +169,10 @@ def start_chat(spy_name, spy_age, spy_rating):
             ####passing current_status_message as argument in the add_status function
 
         elif menu_choice ==2:
-            add_friend()
+            number_of_friends = add_friend()
+            print("you have %d friends. " % (number_of_friends))
+            ##printing number of friends spy has
+
 
 
         elif menu_choice == 6:
