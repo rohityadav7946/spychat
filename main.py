@@ -40,7 +40,76 @@ def spy_details_input():
     ###function will run again if user input invalid name and will ask user to enter details again
 
 ##################################################################
+from steganography.steganography import Steganography
+###importing steganography package
+def send_message():
+    ###function to send secret message
+  friend_choice = select_friend()
+
+  original_image = raw_input("What is the name of the image?")
+  output_path = 'output.jpg'
+    ##giving the new name to the encided image
+  text = raw_input("What do you want to say?")
+  Steganography.encode(original_image, output_path, text)
+    ##encoding process
+  new_chat = {
+      "message": text,
+      "time": datetime.now(),
+      "sent_by_me": True
+  }
+    ###storing date and time of function
+
+  ##friends[friend_choice]['chats'].append(new_chat)
+  print "Your secret message is ready!"
+
+def read_message():
+    ##function to read secret message
+  sender = select_friend()
+
+  output_path = raw_input("What is the name of the file?")
+  secret_text = Steganography.decode(output_path)
+    ##decoding process
+  print(secret_text)
+
+  new_chat = {
+      "message": secret_text,
+      "time": datetime.now(),
+      "sent_by_me": False
+  }
+
+  ##friends[sender]['chats'].append(new_chat)
+  print "Your secret message has been saved!"
+
+
+#####################################################################
+
+
+
+
 friends = []
+
+from datetime import datetime
+time= datetime.now()
+print(time)
+
+def select_friend():
+    ###function to select friend from spy friend list
+  item_number = 0
+
+  for friend in friends:
+    print ('%d. %s' % (item_number + 1, friend['name']))
+
+    item_number = item_number + 1
+
+  friend_choice = int(input("Choose from your friends(index number)"))
+    ##asking spy for friend to whom he/she wants to do chat
+  friend_choice_position = friend_choice - 1
+
+  return friend_choice_position
+
+
+
+
 friends_name = []
 friends_age = []
 friends_rating = []
@@ -158,7 +227,7 @@ def start_chat(spy_name, spy_age, spy_rating):
     ###current status set to none initially
     while show_menu==True:
         ###chekcing condition
-        menu_choices = (" What do you want to do ? \n 1. Add a status update \n2. Add a friend \n3.Send a secret message \n4.Read a Secret message \n5.Read chats from a user \n6.Close Application \n")
+        menu_choices = (" What do you want to do ? \n 1. Add a status update \n2. Add a friend \n3. Show friends \n4.Send a secret message \n5.Read a Secret message \n6.Read chats from a user \n7.Close Application \n")
         menu_choice = int(raw_input(menu_choices))
         ###asking user for his choice
 
@@ -173,9 +242,17 @@ def start_chat(spy_name, spy_age, spy_rating):
             print("you have %d friends. " % (number_of_friends))
             ##printing number of friends spy has
 
+        elif menu_choice ==3:
+            select_friend()
+
+        elif menu_choice ==4:
+            send_message()
+
+        elif menu_choice ==5:
+            read_message()
 
 
-        elif menu_choice == 6:
+        elif menu_choice == 7:
             show_menu = False
 
 
