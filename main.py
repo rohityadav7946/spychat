@@ -57,9 +57,9 @@ def send_message():
       "time": datetime.now(),
       "sent_by_me": True
   }
-    ###storing date and time of function
+##storing date and time of function
 
-  friends[friend_choice].chats.append(new_chat)
+  friends[friend_choice]['chats'].append(new_chat)
     ####appending the chat to the friends list
 
   print "Your secret message is ready!"
@@ -79,9 +79,11 @@ def read_message():
       "sent_by_me": False
   }
 
-  friends[sender].chats.append(new_chat)
+
+  friends[sender]['chats'].append(new_chat)
     ###appending the chat
   print "Your secret message has been saved!"
+
 
 
 #####################################################################
@@ -126,11 +128,13 @@ def add_friend():
         'name':"",
         'salutation':'',
         'age':0,
-        'rating':0.0
+        'rating':0.0,
+        'chats': []
 
 #####dictionary
 
     }
+
 
     new_friend['name'] = raw_input("Please add your friend's name: ")
     new_friend['salutation'] = raw_input("Are they Mr. or Ms.?: ")
