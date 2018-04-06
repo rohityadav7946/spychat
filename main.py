@@ -59,8 +59,9 @@ def send_message():
   }
     ###storing date and time of function
 
-  friends[friend_choice]['chats'].append(new_chat)
+  friends[friend_choice].chats.append(new_chat)
     ####appending the chat to the friends list
+
   print "Your secret message is ready!"
 
 def read_message():
@@ -78,7 +79,7 @@ def read_message():
       "sent_by_me": False
   }
 
-  friends[sender]['chats'].append(new_chat)
+  friends[sender].chats.append(new_chat)
     ###appending the chat
   print "Your secret message has been saved!"
 
