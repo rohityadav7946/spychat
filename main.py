@@ -1,47 +1,13 @@
-def spy_details_input():
-##function which will take details from the new user
-    print("Welcome to Spy Chat")
-## Welcome Greet to the User##
-    spy_name = raw_input("What is your spy_name")
-##asking user for the spy name and storing the input in the variable spy_name##
-    if len(spy_name) > 0:
-    #checking whether spy name is valid or not
-        print('Welcome '+spy_name+', good to see you here.')
-## greeting the spy with his/her name##
-        spy_salutation = raw_input ("What should i call you Mr. or Ms. ?")
-##asking the spy for the salutation and storing the input in the variable spy_salutation##
-        spy_name = spy_salutation + ' '+ spy_name
-##merging the salutation and the spy name to form the complete name and updating the complete spy name##
-        print('Alright ' +spy_name+ ' I would like to know a little bit more about you...')
-##conversation with the spy##
-        spy_age = int(raw_input("What is your age ? "))
-        if spy_age < 12 or spy_age >50:
-            print("sorry! your age is invalid to be a spy")
-        else:
-            spy_experience = raw_input("For how many years you are working as a spy ?")
-        ##asking spy for his/her experience
-
-            spy_rating= float(raw_input("What is your rating [out of 5]"))
-        ##asking spy for his/her experience
-            if spy_rating >= 4.5:
-                print("Good Ace")
-            elif spy_rating < 4.5 and spy_rating >=3.5:
-            ##else if statement
-                print("You are one of the good ones")
-            elif spy_rating <3.5 and spy_rating >=2.5:
-                print ("You can do better")
-            else:
-                print("You can always take help of someone in the office")
-            print("Thanks for providing information about yourself")
-            print("Authentication complete!\nProud to have you on board \n " +spy_name + " of " + str(spy_age) + " years with a experience of " + spy_experience + " years and a rating of " +str(spy_rating))
-    else:
-        print("Please enter a valid name")
-        spy_details_input()
-    ###function will run again if user input invalid name and will ask user to enter details again
-
-##################################################################
+#+++++++++++++++Importing class from spy_details+++++++++++++++++++++++++++++++++++
+from spy_details1 import Spy, friends ,ChatMessage
+from spy_details1 import spy_1
 from steganography.steganography import Steganography
-###importing steganography package
+from datetime import datetime
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 def send_message():
     ###function to send secret message
   friend_choice = select_friend()
@@ -52,17 +18,21 @@ def send_message():
   text = raw_input("What do you want to say?")
   Steganography.encode(original_image, output_path, text)
     ##encoding process
-  new_chat = {
-      "message": text,
-      "time": datetime.now(),
-      "sent_by_me": True
-  }
+  new_chat = ChatMessage(text, True)
 ##storing date and time of function
 
-  friends[friend_choice]['chats'].append(new_chat)
+  friends[friend_choice].chats.append(new_chat)
     ####appending the chat to the friends list
 
   print "Your secret message is ready!"
+
+
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 
 def read_message():
     ##function to read secret message
@@ -73,81 +43,62 @@ def read_message():
     ##decoding process
   print(secret_text)
 
-  new_chat = {
-      "message": secret_text,
-      "time": datetime.now(),
-      "sent_by_me": False
-  }
+  new_chat = ChatMessage(secret_text, False)
 
 
-  friends[sender]['chats'].append(new_chat)
+  friends[sender].chats.append(new_chat)
     ###appending the chat
   print "Your secret message has been saved!"
 
 
 
-#####################################################################
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-
-
-friends = []
 
 from datetime import datetime
 time= datetime.now()
 print(time)
+
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 def select_friend():
     ###function to select friend from spy friend list
   item_number = 0
 
   for friend in friends:
-    print ('%d. %s' % (item_number + 1, friend['name']))
+    print ('%d. %s' % (item_number + 1, friend.name))
 
     item_number = item_number + 1
 
-  friend_choice = int(input("Choose from your friends(index number)"))
+  friend_choice = int(raw_input("Choose from your friends(index number)"))
     ##asking spy for friend to whom he/she wants to do chat
   friend_choice_position = friend_choice - 1
 
   return friend_choice_position
 
 
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-friends_name = []
-friends_age = []
-friends_rating = []
-friends_is_online = []
-####empty list
-######################################NEW METHOD TO ADD A FREIND################################
 
 def add_friend():
     ###function to add details of friends
-    new_friend = {
-        'name':"",
-        'salutation':'',
-        'age':0,
-        'rating':0.0,
-        'chats': []
-
-#####dictionary
-
-    }
+    new_friend = Spy(" "," ",0 ,0.0)
 
 
-    new_friend['name'] = raw_input("Please add your friend's name: ")
-    new_friend['salutation'] = raw_input("Are they Mr. or Ms.?: ")
+    new_friend.name = raw_input("Please add your friend's name: ")
+    new_friend.salutation = raw_input("Are they Mr. or Ms.?: ")
     ##new_friend['name'] = new_friend['salutation'] + " " + new_friend['name']
 
-    new_friend['age'] = int(raw_input("Age?"))
-    new_friend['rating'] = float(raw_input("Spy rating?"))
+    new_friend.age = int(raw_input("Age?"))
+    new_friend.rating = float(raw_input("Spy rating?"))
     ####asking spy to enter details of his freiends
 
 
 
 
-    if len(new_friend['name']) > 0 and new_friend['age'] > 12 and new_friend['rating'] >= spy_rating:
+    if len(new_friend.name) > 0 and new_friend.age > 12 and new_friend.rating >= spy_1.rating:
         friends.append(new_friend)
         ###appending details to list
 
@@ -155,31 +106,8 @@ def add_friend():
         print 'Sorry! Invalid entry. We can\'t add spy with the details you provided'
     return len(friends)
 
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-########################### OLD METHOD TO ADD A FRIEND#######################
-
-
-##def add_friend():
-    ###function to add details of friends
-  ##  new_name = raw_input("Please add your friend's name:")
-    ##new_salutation = raw_input("Are they Mr. or Ms.?: ")
-    ##new_name = new_name + " " + new_salutation
- ##   new_age = raw_input("Age?")
- ##   new_rating = raw_input("Spy rating?")
-   ## if len(new_name) > 0 and new_age > 12 and new_rating >= spy_rating:
-     ##   ####validating the details of friend entered
-       ## friends_name.append(new_name)
-        ##friends_age.append(new_age)
-        ##friends_rating.append(new_rating)
-     ##   return len(friends_name)
-
-   ## else:
-     ##   print 'Sorry! Invalid entry. We can\'t add spy with the details you provided'
-   ## return len(friends_name)
-
-
-###################################################################################
 
 
 
@@ -224,7 +152,7 @@ def add_status(current_status_message):
 status_messages = ['My name is Rohit', 'I am very relaible', 'Mood off', 'Over the Moon', 'Piece of Cake']
 ### pre stored statuses in the list
 
-
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
@@ -264,17 +192,9 @@ def start_chat(spy_name, spy_age, spy_rating):
             show_menu = False
 
 
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-
-
-
-
-spy_name = "Rohit"
-spy_age = 20
-spy_rating = 4.4
-spy_salutation = "Mr."
-####default user details
 
 question = "do you want to continue as default user (Y/N)?"
 
@@ -282,17 +202,57 @@ existing = raw_input(question)
 
 if existing == "Y":
         ####from spy_details import spy_name, spy_salutation, spy_rating, spy_age
-    print(" Welcome %s %s" % (spy_salutation, spy_name))
-    start_chat(spy_name, spy_age, spy_rating)
+    print(" Welcome "+spy_1.salutation+ "  "+spy_1.name)
+    start_chat(spy_1.name, spy_1.age, spy_1.rating)
 else:
-    spy_details_input()
-    ###ask the user to enter details
-    start_chat(spy_name, spy_age, spy_rating)
+    print("Welcome to Spy Chat")
+    ## Welcome Greet to the User##
+    spy_name = raw_input("What is your spy_name")
+    ##asking user for the spy name and storing the input in the variable spy_name##
+    if len(spy_name) > 0:
+        # checking whether spy name is valid or not
+        print('Welcome ' + spy_name + ', good to see you here.')
+        ## greeting the spy with his/her name##
+        spy_salutation = raw_input("What should i call you Mr. or Ms. ?")
+        ##asking the spy for the salutation and storing the input in the variable spy_salutation##
+        spy_name = spy_salutation + ' ' + spy_name
+        ##merging the salutation and the spy name to form the complete name and updating the complete spy name##
+        print('Alright ' + spy_name + ' I would like to know a little bit more about you...')
+        ##conversation with the spy##
+        spy_age = int(raw_input("What is your age ? "))
+        if spy_age < 12 or spy_age > 50:
+            print("sorry! your age is invalid to be a spy")
+        else:
+            spy_experience = raw_input("For how many years you are working as a spy ?")
+            ##asking spy for his/her experience
+
+            spy_rating = float(raw_input("What is your rating [out of 5]"))
+            ##asking spy for his/her experience
+            if spy_rating >= 4.5:
+                print("Good Ace")
+            elif spy_rating < 4.5 and spy_rating >= 3.5:
+                ##else if statement
+                print("You are one of the good ones")
+            elif spy_rating < 3.5 and spy_rating >= 2.5:
+                print ("You can do better")
+            else:
+                print("You can always take help of someone in the office")
+            print("Thanks for providing information about yourself")
+            print("Authentication complete!\nProud to have you on board \n " + spy_name + " of " + str(
+                spy_age) + " years with a experience of " + spy_experience + " years and a rating of " + str(
+                spy_rating))
+
+
+            start_chat(spy_name, spy_age, spy_rating)
+
+    else:
+        print("Invalid name, please try again")
+
     ##calling of start_chat function
 
 
 
-
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
