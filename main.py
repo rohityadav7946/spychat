@@ -1,87 +1,15 @@
 #+++++++++++++++Importing class from spy_details+++++++++++++++++++++++++++++++++++
-from spy_details1 import Spy, friends ,ChatMessage
+from spy_details1 import Spy, friends ,ChatMessage,chats
 from spy_details1 import spy_1
 from steganography.steganography import Steganography
 from datetime import datetime
-
+from termcolor import colored
+import csv
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
-def send_message():
-    ###function to send secret message
-  friend_choice = select_friend()
-
-  original_image = raw_input("What is the name of the image?")
-  output_path = 'output.jpg'
-    ##giving the new name to the encided image
-  text = raw_input("What do you want to say?")
-  Steganography.encode(original_image, output_path, text)
-    ##encoding process
-  new_chat = ChatMessage(text, True)
-##storing date and time of function
-
-  friends[friend_choice].chats.append(new_chat)
-    ####appending the chat to the friends list
-
-  print "Your secret message is ready!"
-
-
-
-
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-
-def read_message():
-    ##function to read secret message
-  sender = select_friend()
-
-  output_path = raw_input("What is the name of the file?")
-  secret_text = Steganography.decode(output_path)
-    ##decoding process
-  print(secret_text)
-
-  new_chat = ChatMessage(secret_text, False)
-
-
-  friends[sender].chats.append(new_chat)
-    ###appending the chat
-  print "Your secret message has been saved!"
-
-
-
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-from datetime import datetime
-time= datetime.now()
-print(time)
-
-
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-def select_friend():
-    ###function to select friend from spy friend list
-  item_number = 0
-
-  for friend in friends:
-    print ('%d. %s' % (item_number + 1, friend.name))
-
-    item_number = item_number + 1
-
-  friend_choice = int(raw_input("Choose from your friends(index number)"))
-    ##asking spy for friend to whom he/she wants to do chat
-  friend_choice_position = friend_choice - 1
-
-  return friend_choice_position
-
-
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def add_friend():
     ###function to add details of friends
     new_friend = Spy(" "," ",0 ,0.0)
@@ -101,10 +29,122 @@ def add_friend():
     if len(new_friend.name) > 0 and new_friend.age > 12 and new_friend.rating >= spy_1.rating:
         friends.append(new_friend)
         ###appending details to list
+        with open("friends.csv", "a") as friends_data:
+            writer = csv.writer(friends_data)
+            writer.writerow(
+                [new_friend.name, new_friend.salutation, new_friend.age, new_friend.rating, new_friend.is_online])
+
 
     else:
         print 'Sorry! Invalid entry. We can\'t add spy with the details you provided'
     return len(friends)
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def select_friend():
+    ###function to select friend from spy friend list
+  item_number = 0
+
+  for friend in friends:
+    print ('%d. %s' % (item_number + 1, friend.name))
+
+    item_number = item_number + 1
+
+  friend_choice = int(raw_input("Choose from your friends(index number)"))
+    ##asking spy for friend to whom he/she wants to do chat
+  friend_choice_position = friend_choice - 1
+
+  return friend_choice_position
+
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+special_words = ['SAVE ME', 'SOS' , 'HELP']
+
+
+
+def send_message():
+    ###function to send secret message
+  friend_choice = friends[select_friend()].name
+
+  original_image = raw_input("What is the name of the image?")
+  output_path = 'output.jpg'
+    ##giving the new name to the encided image
+  text = raw_input("What do you want to say?")
+  if text in special_words:
+        text = colored(text + ": IT'S EMMERGENCY!! Come for help", "red")
+
+  Steganography.encode(original_image, output_path, text)
+    ##encoding process
+  new_chat = ChatMessage(spy_name=spy_1.name, friend_name=friend_choice, time=datetime.now().strftime("%d %B %Y"), message=text)
+##storing date and time of function
+
+  chats.append(new_chat)
+    ####appending the chat to the friends list
+
+  print "Your secret message is ready!"
+
+  with open('chats.csv', 'a') as chats_data:
+        writer = csv.writer(chats_data)
+        writer.writerow([new_chat.spy_name, new_chat.friend_name, new_chat.time, new_chat.message])
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+def read_message():
+    ##function to read secret message
+  sender = select_friend()
+
+  output_path = raw_input("What is the name of the file?")
+  secret_text = Steganography.decode(output_path)
+    ##decoding process
+  print(secret_text)
+
+  chat = ChatMessage(spy_name=spy_1.name, friend_name=sender, time=datetime.now().strftime("%d %B %Y"), message=secret_text)
+
+
+  friends[sender].chats.append(chat)
+    ###appending the chat
+  print "Your secret message has been saved!"
+
+  with open("chats.csv", 'a') as chat_record:
+        writer = csv.writer(chat_record)
+        writer.writerow([chat.spy_name, chat.friend_name, chat.time, chat.message])
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def readchat(choice):
+    name_friend = friends[choice].name
+    with open('Chats.csv', 'rU') as chats_data:
+        reader = csv.reader(chats_data)
+        for row in reader:
+            try:
+                c = ChatMessage(spy_name=row[0], friend_name=row[1], time=row[2], message=row[3])
+                # checking the chats of the current spy with selected friend
+                if c.spy_name == spy_1.name and c.friend_name == name_friend:
+                    print colored("You sent message to the Spy name: %s "%name_friend,"red")
+                    print colored("On Time: [%s]"%c.time,"blue")
+                    print("Message: %s"% c.message)
+                    return 1
+            except IndexError:
+                pass
+            continue
+
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+from datetime import datetime
+time= datetime.now()
+print(time)
+
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -158,9 +198,37 @@ status_messages = ['My name is Rohit', 'I am very relaible', 'Mood off', 'Over t
 
 def start_chat(spy_name, spy_age, spy_rating):
     #### calling of start_chat function
-    show_menu = True
+
     current_status_message=None
     ###current status set to none initially
+
+    def load_friends():
+        with open('friends.csv', 'rU') as friends_data:
+            reader = csv.reader(friends_data)
+            for row in reader:
+                try:
+                    friends.append(Spy(name=row[0], salutation=(row[1]), age=int(row[2]), rating=float(row[3])))
+                except IndexError:
+                    pass
+                continue
+
+    # load_chats() is a function which loads all the chats of spies stored in chats.csv
+    def load_chats():
+        with open("chats.csv", 'rU') as chat_data:
+            reader = csv.reader(chat_data)
+            for row in reader:
+                try:
+                    chats.append(ChatMessage(spy_name=row[0], friend_name=row[1], time=row[2], message=row[3]))
+                except IndexError:
+                    pass
+                continue
+
+    # both functions are called so that chats and list of friends are loaded before its usage
+    load_friends()
+    load_chats()
+
+    show_menu = True
+
     while show_menu==True:
         ###chekcing condition
         menu_choices = (" What do you want to do ? \n 1. Add a status update \n2. Add a friend \n3. Show friends \n4.Send a secret message \n5.Read a Secret message \n6.Read chats from a user \n7.Close Application \n")
@@ -186,6 +254,12 @@ def start_chat(spy_name, spy_age, spy_rating):
 
         elif menu_choice ==5:
             read_message()
+
+        elif menu_choice ==6:
+            print("Reading chat from user")
+            print "select a friend whose chat you want to see"
+            choice = select_friend()
+            readchat(choice)
 
 
         elif menu_choice == 7:
