@@ -1,4 +1,7 @@
 from datetime import datetime
+import csv
+from termcolor import colored
+
 
 
 # creating class
@@ -12,21 +15,19 @@ class Spy:
         self.chats=[]
         self.current_status_message= None
 
-class ChatMessage:
 
-    def __init__(self,message,sent_by_me):
-        self.message = message
+class ChatMessage:
+    def __init__(self, spy_name, friend_name, time, message):
+        self.spy_name = spy_name
+        self.friend_name = friend_name
         self.time = datetime.now()
-        self.sent_by_me = sent_by_me
+        self.message = message
 
 
 # define spy_name, age, rating)
 spy_1=Spy('Rohit','Mr',20,4.4)
 
-# details of existing friends
-friend_one=Spy('Deepak','Ms',20,4.5)
-friend_two=Spy('Nikhil','Mr',21,4.6)
-friend_three=Spy('Krishan','Mr',22,4.7)
-
 # lists of friends
-friends=[friend_one,friend_two,friend_three]
+friends=[]
+# list of chats
+chats = []
